@@ -1,78 +1,74 @@
 <template>
-    <header id="navbar" class="w-full hidden lg:flex flex-col">
-      <nav class="w-full flex justify-between border-bot">
-        <github-corner url="https://github.com/alexdeploy/developer-portfolio-v2" />
-          <div class="flex">
-            <NuxtLink id="nav-logo" to="/">
-              {{ config.dev.logo_name }}
-            </NuxtLink>
+  <header id="navbar" class="w-full hidden lg:flex flex-col">
+    <nav class="w-full flex justify-between border-bot">
+      <github-corner
+        url="https://github.com/alexdeploy/developer-portfolio-v2"
+      />
+      <div class="flex">
+        <NuxtLink id="nav-logo" to="/">
+          {{ config?.logo_name }}
+        </NuxtLink>
 
-            <NuxtLink id="nav-link" to="/" :class="{ active: isActive('/') }">
-              _hello
-            </NuxtLink>
-  
-            <NuxtLink id="nav-link" to="/about-me" :class="{ active: isActive('/about-me') }">
-              _about-me
-            </NuxtLink>
-  
-            <NuxtLink id="nav-link" to="/projects" :class="{ active: isActive('/projects') }">
-              _projects
-            </NuxtLink>
-          </div>
+        <NuxtLink id="nav-link" to="/" :class="{ active: isActive('/') }">
+          _hello
+        </NuxtLink>
 
-          <NuxtLink id="nav-link-contact" to="/contact-me" :class="{ active: isActive('/contact-me')}">
-            _contact-me
-          </NuxtLink>
-      
-      </nav>
+        <NuxtLink
+          id="nav-link"
+          to="/about-me"
+          :class="{ active: isActive('/about-me') }"
+        >
+          _about-me
+        </NuxtLink>
 
-    </header>
+        <NuxtLink
+          id="nav-link"
+          to="/projects"
+          :class="{ active: isActive('/projects') }"
+        >
+          _projects
+        </NuxtLink>
+      </div>
 
+      <NuxtLink
+        id="nav-link-contact"
+        to="/contact-me"
+        :class="{ active: isActive('/contact-me') }"
+      >
+        _contact-me
+      </NuxtLink>
+    </nav>
+  </header>
 </template>
+<script setup lang="ts">
+import type { Home } from "~/types/ContentIndex";
+const router = useRoute();
+const isActive = computed(() => (route: string) => router.path === route);
 
-<script>
-import GithubCorner from './GithubCorner.vue';
-export default {
-  name: 'AppHeader',
-  components: {
-    GithubCorner
-  },
-  computed: {
-    // Set active class to current page link
-    isActive() {
-      return route => this.$route.path === route;
-    }
-  },
-  setup() {
-    const config = useRuntimeConfig()
-
-    return {
-      config
-    }
-  },
-};
-
+const { data: config } = await useAsyncData("logo_name", () =>
+  queryContent<Home>("/").only("logo_name").findOne()
+);
 </script>
 
 <style>
-
 #nav-link {
-  border-right: 1px solid #1E2D3D;
+  border-right: 1px solid #1e2d3d;
   @apply text-menu-text font-fira_retina px-6 h-full flex items-center;
 }
 
 #nav-link-contact {
-  border-left: 1px solid #1E2D3D;
+  border-left: 1px solid #1e2d3d;
   @apply text-menu-text font-fira_retina px-6 h-full flex items-center;
 }
 
-#nav-link:hover, #nav-link-contact:hover {
+#nav-link:hover,
+#nav-link-contact:hover {
   background-color: #1e2d3d74;
   color: white;
 }
 
 #nav-logo {
-  border-right: 1px solid #1E2D3D;
+  border-right: 1px solid #1e2d3d;
   @apply text-menu-text font-fira_retina px-6 h-full flex items-center;
 }
 
@@ -81,13 +77,14 @@ export default {
   color: white;
 }
 
-#nav-link.router-link-active, #nav-link-contact.router-link-active {
-  border-bottom: 2px solid #FEA55F;
+#nav-link.router-link-active,
+#nav-link-contact.router-link-active {
+  border-bottom: 2px solid #fea55f;
   color: white;
 }
 
 #nav-logo.router-link-active {
-  border-right: 1px solid #1E2D3D;
+  border-right: 1px solid #1e2d3d;
   border-bottom: none;
   @apply text-menu-text;
 }
@@ -96,6 +93,4 @@ export default {
   height: 45px;
   font-size: 13px;
 }
-
 </style>
-
