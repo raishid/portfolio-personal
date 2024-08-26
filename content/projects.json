@@ -1,58 +1,73 @@
 {
   "projects": {
     "1": {
-      "title": "_ui-animations",
-      "description": "Duis aute irure dolor in velit esse cillum dolore.",
-      "img": "/images/projects/ui-animations2.png",
-      "tech": [
-        "Flutter"
-      ],
-      "url": "https://github.com/"
-    },
-    "2": {
-      "title": "_ai-resources",
-      "description": "Duis aute irure dolor in velit esse cillum dolore.",
-      "img": "/images/projects/ai-resources.png",
-      "tech": [
-        "Gatsby"
-      ],
-      "url": "https://github.com/"
-    },
-    "3": {
-      "title": "_worldmap",
-      "description": "Duis aute irure dolor in velit esse cillum dolore.",
-      "img": "/images/projects/worldmap.png",
-      "tech": [
-        "Angular"
-      ],
-      "url": "https://github.com/"
-    },
-    "4": {
-      "title": "_ui-animations",
-      "description": "Duis aute irure dolor in velit esse cillum dolore.",
-      "img": "/images/projects/ui-animations.png",
-      "tech": [
-        "React"
-      ],
-      "url": "https://github.com/"
-    },
-    "5": {
-      "title": "_tetris-game",
-      "description": "Duis aute irure dolor in velit esse cillum dolore.",
-      "img": "/images/projects/tetris-game.png",
-      "tech": [
-        "React"
-      ],
-      "url": "https://github.com/"
-    },
-    "6": {
-      "title": "_ethereum",
-      "description": "Duis aute irure dolor in velit esse cillum dolore.",
-      "img": "/images/projects/ethereum.png",
+      "title": "_vault-password-manager",
+      "description": "Vault Password Manager is an innovative Chrome extension designed to simplify and secure the way you manage your passwords.",
+      "img": "/images/projects/vault-password-manager.png",
       "tech": [
         "Vue"
       ],
-      "url": "https://github.com/"
+      "url": "https://chromewebstore.google.com/detail/vault-password-manager-be/nlllmmoihoglpfphbebllloemhiadgap?hl=es&utm_source=ext_sidebar"
+    },
+    "2": {
+      "title": "_san-valentin-hearts",
+      "description": "Simple function to add hearts throughout the thematic website: Valentine's Day.",
+      "img": "/images/projects/san-valentin-hearts.png",
+      "tech": [
+        "Vanilla"
+      ],
+      "url": "https://www.npmjs.com/package/san-valentin-hearts/"
+    },
+    "3": {
+      "title": "_personal-portfolio-marfeluis",
+      "description": "Personal portfolio for a children's clothing seamstress.",
+      "img": "/images/projects/portfolio-marfeluis.png",
+      "tech": [
+        "Vue",
+        "Nuxt"
+      ],
+      "url": "https://www.creacionesmarfeluis.com/"
+    },
+    "4": {
+      "title": "_trustcloud-tech",
+      "description": "TrustCloud is a Secure Digital Transaction Choreographer.",
+      "img": "/images/projects/trustcloud-tech.png",
+      "tech": [
+        "Wordpress"
+      ],
+      "url": "https://trustcloud.tech/"
+    },
+    "5": {
+      "title": "_hack-de-cuentas",
+      "description": "Simulation site for hacking social media accounts.",
+      "img": "/images/projects/hackdecuentas.png",
+      "tech": [
+        "Nuxt",
+        "Vue",
+        "Laravel"
+      ],
+      "url": "https://hackdecuentas.com/"
+    },
+    "6": {
+      "title": "_ratings",
+      "description": "Statistics Generator Charts by Grades.",
+      "img": "/images/projects/ratings.png",
+      "tech": [
+        "Vue",
+        "Nuxt",
+        "Laravel"
+      ],
+      "url": "#"
+    },
+    "7": {
+      "title": "_bot-auto-transfer",
+      "description": "Automatic Payroll Transfer Generator - Banesco Online",
+      "img": "/images/projects/bot-banesco.png",
+      "tech": [
+        "Vue",
+        "Python"
+      ],
+      "url": "#"
     }
   }
 }

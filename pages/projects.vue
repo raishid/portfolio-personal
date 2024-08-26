@@ -115,7 +115,15 @@ const { data: config } = useAsyncData("projects", () =>
   queryContent<ProjectsData>("projects").findOne()
 );
 
-const techs = ["React", "HTML", "CSS", "Vue", "Angular", "Gatsby", "Flutter"];
+const techs = [
+  //"React",
+  "Vue",
+  "Vanilla",
+  "Laravel",
+  "Nuxt",
+  "Wordpress",
+  "Python",
+];
 const filters = ref(["all"]);
 const showFilters = ref(true);
 const projects = ref(config?.value?.projects);

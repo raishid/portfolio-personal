@@ -15,15 +15,10 @@
         "url": "https://github.com/",
         "user": "raishid"
       },
-      "facebook": {
-        "title": "Facebook profile",
-        "url": "https://facebook.com/",
-        "user": "username"
-      },
-      "twitter": {
-        "title": "Twitter account",
-        "url": "https://twitter.com/",
-        "user": "username"
+      "linkedin": {
+        "title": "LinkedIn profile",
+        "url": "https://www.linkedin.com/in/",
+        "user": "federico-david-22026a1b0"
       }
     },
     "find_me_also_in": {

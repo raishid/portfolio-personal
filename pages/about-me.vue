@@ -45,14 +45,15 @@
         </div>
 
         <!-- folders -->
-        <div>
-          <div
+        <ul id="folders">
+          <li
             v-for="(folder, key, index) in config?.about.sections[
               currentSection
             ].info"
             :key="key"
             class="grid grid-cols-2 items-center my-2 font-fira_regular text-menu-text"
-            @click="focusCurrentFolder(folder)"
+            @click="focusCurrentFolder($event, folder, index)"
+            :data-accordion="folder.files ? folder.title : ''"
           >
             <div class="flex col-span-2 hover:text-white hover:cursor-pointer">
               <img
@@ -72,18 +73,24 @@
                 :class="{ active: isActive(folder.title) }"
               ></p>
             </div>
-            <div v-if="folder.files !== undefined" class="col-span-2">
-              <div
+            <ul
+              v-if="folder.files !== undefined"
+              class="col-span-2 pl-2 hidden h-0 overflow-hidden transition-all duration-500"
+              :aria-label="`files-accordion-content-${index + 1}`"
+            >
+              <li
                 v-for="(file, key) in folder.files"
                 :key="key"
+                @click="toggleFiles(key as string, file)"
+                :data-folder="`${folder.title}`"
                 class="hover:text-white hover:cursor-pointer flex my-2"
               >
                 <img src="/icons/markdown.svg" alt="" class="ml-8 mr-3" />
                 <p>{{ key }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
 
         <!-- contact -->
         <div
@@ -110,7 +117,7 @@
             <img :src="'/icons/' + key + '.svg'" alt="" class="mx-4" />
             <a
               v-html="source"
-              href="/"
+              :href="`mailto:${source}`"
               class="font-fira_retina text-menu-text hover:text-white"
             ></a>
           </div>
@@ -165,10 +172,11 @@
                 <div
                   v-for="(file, key) in folder.files"
                   :key="key"
+                  @click="toggleFiles"
                   class="hover:text-white hover:cursor-pointer flex my-2"
                 >
                   <img src="/icons/markdown.svg" alt="" class="ml-8 mr-3" />
-                  <p>{{ key }}</p>
+                  <p>{{ file }}</p>
                 </div>
               </div>
             </div>
@@ -179,7 +187,7 @@
         <div
           id="section-content-title"
           class="flex items-center min-w-full"
-          @click="showContacts()"
+          @click="showContacts"
         >
           <img
             src="/icons/arrow.svg"
@@ -203,7 +211,7 @@
             <img :src="'/icons/' + key + '.svg'" alt="" />
             <a
               v-html="source"
-              href="/"
+              :href="`mailto:${source}`"
               class="font-fira_retina text-menu-text hover:text-white ml-4"
             ></a>
           </div>
@@ -217,9 +225,21 @@
       <div id="left" class="w-full flex flex-col border-right">
         <!-- windows tab desktop -->
         <div class="tab-height w-full hidden lg:flex border-bot items-center">
-          <div class="flex items-center border-right h-full">
+          <div
+            class="flex items-center border-right h-full tab-primary tab-active"
+          >
             <p
-              v-html="config?.about.sections[currentSection].title"
+              v-html="windowTab"
+              class="font-fira_regular text-menu-text text-sm px-3"
+            ></p>
+            <img src="/icons/close.svg" alt="" class="mx-3" />
+          </div>
+          <div
+            class="flex items-center border-right h-full tab-file"
+            v-if="isFileOpen"
+          >
+            <p
+              v-html="filesTab"
               class="font-fira_regular text-menu-text text-sm px-3"
             ></p>
             <img src="/icons/close.svg" alt="" class="mx-3" />
@@ -246,11 +266,7 @@
           class="flex h-full w-full lg:border-right overflow-hidden"
         >
           <div class="w-full h-full ml-5 mr-10 lg:my-5 overflow-scroll">
-            <CommentedText
-              :text="
-                config?.about.sections[currentSection].info[folder].description
-              "
-            />
+            <CommentedText :text="infoText" v-if="infoText" />
           </div>
 
           <!-- scroll bar -->
@@ -286,12 +302,12 @@
 
             <div class="flex flex-col overflow-scroll">
               <!-- snippets -->
-              <GistSnippet
+              <!-- <GistSnippet
                 data-aos="fade-down"
                 v-for="(gist, key) in config?.gists"
                 :key="key"
                 :id="gist"
-              />
+              /> -->
             </div>
           </div>
 
@@ -324,8 +340,6 @@ const { data: Datacontacts } = useAsyncData("contacts", () =>
   queryContent<Home>("/").only("contacts").findOne()
 );
 
-console.log(Datacontacts.value);
-
 const isActive = computed(() => {
   return (folderv2: string) => folderv2 === folder.value;
 });
@@ -336,6 +350,18 @@ const isSectionActive = computed(() => {
 const isOpen = computed(() => {
   return (folderv2: string) => folderv2 === folder.value;
 });
+
+const isFileOpen = ref(false);
+
+const infoText = ref(
+  config.value &&
+    //@ts-ignore
+    config.value.about.sections[currentSection.value]?.info[folder.value]
+      .description
+);
+
+const windowTab = ref(folder.value);
+const filesTab = ref("");
 
 const focusCurrentSection = (section) => {
   currentSection.value = section.title;
@@ -357,17 +383,59 @@ type folder = {
   title: string;
   value: string;
   description: string;
+  files?: Record<string, string>;
 };
 
-const focusCurrentFolder = ($folder: folder) => {
-  folder.value = $folder.title;
-};
+const focusCurrentFolder = (event: Event, $folder: folder, index: number) => {
+  const target = event.target as HTMLElement;
 
-const toggleFiles = () => {
-  const fileElement = document.getElementById("file-" + folder.value);
-  if (fileElement !== null) {
-    fileElement.classList.toggle("hidden");
+  if (
+    target.closest("li")?.getAttribute("data-folder") === `${$folder.title}`
+  ) {
+    return;
   }
+  isFileOpen.value = false;
+  folder.value = $folder.title;
+  windowTab.value = $folder.title;
+  infoText.value = $folder.description;
+  document.querySelector(".tab-primary")?.classList.add("tab-active");
+
+  document.querySelectorAll("#folders li").forEach((el) => {
+    if (el.getAttribute("data-accordion") !== $folder.title) {
+      el.querySelectorAll("ul").forEach((ul) => {
+        ul.style.height = "0px";
+        setTimeout(() => {
+          ul.classList.add("hidden");
+        }, 500);
+      });
+    }
+  });
+  if ($folder.files) {
+    const fileElement = document.querySelector(
+      `[aria-label="files-accordion-content-${index + 1}"]`
+    ) as HTMLElement;
+    if (fileElement !== null) {
+      if (fileElement.classList.contains("hidden")) {
+        fileElement.classList.remove("hidden");
+        fileElement.style.height = fileElement.scrollHeight + "px";
+      } else {
+        fileElement.style.height = "0px";
+        setTimeout(() => {
+          fileElement.classList.add("hidden");
+        }, 500);
+      }
+    }
+  }
+};
+
+const toggleFiles = ($key: string, $file: string) => {
+  infoText.value = $file;
+  filesTab.value = $key;
+  isFileOpen.value = true;
+  document.querySelector(".tab-active")?.classList.remove("tab-active");
+  setTimeout(() => {
+    document.querySelector(".tab-file")?.classList.add("tab-active");
+  }, 500);
 };
 const showContacts = () => {
   const contactsElement = document.getElementById("contacts");
@@ -476,5 +544,8 @@ onMounted(() => {
 }
 #section-content {
   @apply lg:min-w-[260px];
+}
+.tab-active {
+  background-color: #0b304d;
 }
 </style>

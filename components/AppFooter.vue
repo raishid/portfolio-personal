@@ -13,25 +13,15 @@
       <div id="social-icons" class="flex">
         <NuxtLink
           :to="
-            (config?.contacts.social.twitter.url ?? '') +
-            config?.contacts.social.twitter.user
+            (config?.contacts.social.linkedin.url ?? '') +
+            config?.contacts.social.linkedin.user
           "
           target="_blank"
           class="flex justify-center items-center"
         >
-          <img src="/icons/social/twitter.svg" />
+          <img src="/icons/social/linkedin.svg" />
         </NuxtLink>
-        <NuxtLink
-          :to="
-            (config?.contacts.social.facebook.url ?? '') +
-            config?.contacts.social.facebook.user
-          "
-          target="_blank"
-          class="flex justify-center items-center"
-        >
-          <img src="/icons/social/facebook.svg" />
-        </NuxtLink>
-        <NuxtLink
+        <!-- <NuxtLink
           :to="
             (config?.contacts.social.github.url ?? '') +
             config?.contacts.social.github.user
@@ -40,7 +30,7 @@
           class="flex md:hidden justify-center items-center"
         >
           <img src="/icons/social/github.svg" />
-        </NuxtLink>
+        </NuxtLink> -->
       </div>
     </div>
 
@@ -62,8 +52,10 @@
 import type { Home } from "~/types/ContentIndex";
 
 const { data: config } = await useAsyncData("footer_contacts", () =>
-  queryContent<Home>("index").only("contacts").findOne()
+  queryContent<Home>("/").only("contacts").findOne()
 );
+
+console.log(config.value);
 </script>
 
 <style>

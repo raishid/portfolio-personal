@@ -18,6 +18,7 @@ export interface Contacts {
     github: SocialProfile;
     facebook: SocialProfile;
     twitter: SocialProfile;
+    linkedin: SocialProfile;
   };
   find_me_also_in: {
     title: string;
