@@ -1,8 +1,8 @@
 <template>
   <MobileMenu />
   <AppHeader />
-  <main>
+  <div class="grow">
     <slot />
-  </main>
+  </div>
   <AppFooter />
 </template>

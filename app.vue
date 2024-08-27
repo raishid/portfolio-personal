@@ -15,9 +15,7 @@ export default {
    * @param {Object} from - Route object
    */
   watch: {
-    $route(to, from) {
-      console.log("De", from.fullPath, "a", to.fullPath);
-    },
+    $route(to, from) {},
   },
   mounted() {
     AOS.init({

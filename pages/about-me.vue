@@ -67,11 +67,11 @@
                 alt=""
                 class="mr-3"
               />
-              <p
+              <span
                 :id="folder.title"
                 v-html="key"
                 :class="{ active: isActive(folder.title) }"
-              ></p>
+              ></span>
             </div>
             <ul
               v-if="folder.files !== undefined"
@@ -93,35 +93,6 @@
         </ul>
 
         <!-- contact -->
-        <div
-          id="section-content-title-contact"
-          class="flex items-center min-w-full border-top"
-        >
-          <img
-            id="section-arrow-menu"
-            src="/icons/arrow.svg"
-            alt=""
-            class="section-arrow mx-3 open"
-          />
-          <p
-            v-html="Datacontacts?.contacts.direct.title"
-            class="font-fira_regular text-white text-sm"
-          ></p>
-        </div>
-        <div id="contact-sources" class="hidden lg:flex lg:flex-col my-2">
-          <div
-            v-for="(source, key) in Datacontacts?.contacts.direct.sources"
-            :key="key"
-            class="flex items-center mb-2"
-          >
-            <img :src="'/icons/' + key + '.svg'" alt="" class="mx-4" />
-            <a
-              v-html="source"
-              :href="`mailto:${source}`"
-              class="font-fira_retina text-menu-text hover:text-white"
-            ></a>
-          </div>
-        </div>
       </div>
 
       <!-- mobile -->
@@ -145,15 +116,16 @@
           </div>
 
           <!-- folders -->
-          <div :id="'folders-' + section.title" class="hidden">
+          <ul :id="'folders-' + section.title" class="hidden">
             <!-- <div :id="'folders-' + section.title" :class="currentSection == section.title ? 'block' : 'hidden'"> -->
-            <div
+            <li
               v-for="(folder, key, index) in config?.about.sections[
                 section.title
               ].info"
               :key="key"
               class="grid grid-cols-2 items-center my-2 font-fira_regular text-menu-text hover:text-white hover:cursor-pointer"
-              @click="focusCurrentFolder(folder)"
+              @click="focusCurrentFolder($event, folder, index)"
+              :data-accordion="folder.files ? folder.title : ''"
             >
               <div class="flex col-span-2">
                 <img id="diple" src="/icons/diple.svg" />
@@ -162,44 +134,29 @@
                   alt=""
                   class="mr-3"
                 />
-                <p
+                <span
                   :id="folder.title"
                   v-html="key"
                   :class="{ active: isActive(folder.title) }"
-                ></p>
+                ></span>
               </div>
-              <div v-if="folder.files !== undefined" class="col-span-2">
-                <div
+              <ul v-if="folder.files !== undefined" class="col-span-2">
+                <li
                   v-for="(file, key) in folder.files"
                   :key="key"
-                  @click="toggleFiles"
+                  @click="toggleFiles(key as string, file)"
+                  :data-folder="`${folder.title}`"
                   class="hover:text-white hover:cursor-pointer flex my-2"
                 >
                   <img src="/icons/markdown.svg" alt="" class="ml-8 mr-3" />
-                  <p>{{ file }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+                  <p>{{ key }}</p>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </div>
 
         <!-- section content title -->
-        <div
-          id="section-content-title"
-          class="flex items-center min-w-full"
-          @click="showContacts"
-        >
-          <img
-            src="/icons/arrow.svg"
-            alt=""
-            id="section-arrow"
-            class="section-arrow"
-          />
-          <p
-            v-html="Datacontacts?.contacts.direct.title"
-            class="font-fira_regular text-white text-sm"
-          ></p>
-        </div>
 
         <!-- section content folders -->
         <div id="contacts" class="hidden">
@@ -255,7 +212,7 @@
           ></h3>
           <span class="text-menu-text"> / </span>
           <h3
-            v-html="config?.about.sections[currentSection].info[folder].title"
+            v-html="config?.about.sections[currentSection].info[folder]?.title"
             class="text-menu-text pl-2"
           ></h3>
         </div>
@@ -302,12 +259,12 @@
 
             <div class="flex flex-col overflow-scroll">
               <!-- snippets -->
-              <!-- <GistSnippet
+              <GistSnippet
                 data-aos="fade-down"
                 v-for="(gist, key) in config?.gists"
                 :key="key"
                 :id="gist"
-              /> -->
+              />
             </div>
           </div>
 
@@ -326,17 +283,31 @@
 <script setup lang="ts">
 import type { About } from "~/types/ContentAbout";
 import type { Home } from "~/types/ContentIndex";
+
+useSeoMeta({
+  title: "About me",
+  description: "About me page of my portfolio",
+  ogImage: "/demo.png",
+  msapplicationTileImage: "/demo.png",
+  msapplicationTileColor: "#000000",
+  author: "Fede David",
+  twitterCard: "summary_large_image",
+  twitterTitle: "About me | Portfolio",
+  twitterDescription: "About me page of my portfolio",
+  twitterImage: "/demo.png",
+});
+
 const currentSection = ref(
   "personal-info" as "personal-info" | "professional-info" | "hobbies-info"
 );
 const folder = ref("bio");
 const loading = ref(true);
 
-const { data: config } = useAsyncData("about-me", () =>
+const { data: config } = await useAsyncData("about-me", () =>
   queryContent<About>("about-me").findOne()
 );
 
-const { data: Datacontacts } = useAsyncData("contacts", () =>
+const { data: Datacontacts } = await useAsyncData("contacts", () =>
   queryContent<Home>("/").only("contacts").findOne()
 );
 
@@ -353,12 +324,7 @@ const isOpen = computed(() => {
 
 const isFileOpen = ref(false);
 
-const infoText = ref(
-  config.value &&
-    //@ts-ignore
-    config.value.about.sections[currentSection.value]?.info[folder.value]
-      .description
-);
+const infoText = ref<string | undefined>(undefined);
 
 const windowTab = ref(folder.value);
 const filesTab = ref("");
@@ -450,6 +416,8 @@ const showContacts = () => {
 
 onMounted(() => {
   loading.value = false;
+  infoText.value =
+    config.value?.about.sections["personal-info"].info.bio.description;
 });
 </script>
 <style>

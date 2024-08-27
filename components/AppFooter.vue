@@ -54,8 +54,6 @@ import type { Home } from "~/types/ContentIndex";
 const { data: config } = await useAsyncData("footer_contacts", () =>
   queryContent<Home>("/").only("contacts").findOne()
 );
-
-console.log(config.value);
 </script>
 
 <style>

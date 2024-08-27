@@ -53,7 +53,7 @@
 
     <!-- content -->
 
-    <div class="flex flex-col w-full overflow-hidden">
+    <div class="flex flex-col w-full overflow-hidden projects">
       <!-- windows tab -->
       <div class="tab-height w-full hidden lg:flex border-bot items-center">
         <div class="flex items-center border-right h-full">
@@ -85,6 +85,7 @@
       <!-- projects -->
       <div
         id="projects-case"
+        :key="project_key"
         class="grid grid-cols-1 lg:grid-cols-2 max-w-full h-full overflow-scroll lg:self-center"
       >
         <div
@@ -99,10 +100,11 @@
         </div>
 
         <project-card
-          v-for="(project, key, index) in projects"
-          :key="key"
+          v-for="(project, _key, index) in projects"
+          :key="project.title"
           :index="index"
           :project="project"
+          :transition="{ duration: 400 * (index + 1) + 100, delay: 0.2 }"
         />
       </div>
     </div>
@@ -110,8 +112,24 @@
 </template>
 
 <script setup lang="ts">
+import { rand } from "@vueuse/core";
 import type { ProjectsData } from "~/types/ContentProjects";
-const { data: config } = useAsyncData("projects", () =>
+
+useSeoMeta({
+  title: "Projects",
+  description: "Projects developed by Fede David using different technologies",
+  ogImage: "/demo.png",
+  msapplicationTileImage: "/demo.png",
+  msapplicationTileColor: "#000000",
+  author: "Fede David",
+  twitterCard: "summary_large_image",
+  twitterTitle: "Projects | Portfolio",
+  twitterDescription:
+    "Projects developed by Fede David using different technologies",
+  twitterImage: "/demo.png",
+});
+
+const { data: config } = await useAsyncData("projects", () =>
   queryContent<ProjectsData>("projects").findOne()
 );
 
@@ -127,6 +145,7 @@ const techs = [
 const filters = ref(["all"]);
 const showFilters = ref(true);
 const projects = ref(config?.value?.projects);
+const project_key = ref(rand(1000, 99999));
 
 function filterProjects(tech: string) {
   const iconTech = document.getElementById("icon-tech-" + tech);
@@ -146,10 +165,14 @@ function filterProjects(tech: string) {
     filters.value = filters.value.filter((item) => item !== tech);
     filters.value.length === 0 ? filters.value.push("all") : null;
   }
-  filters.value[0] == "all"
-    ? (projects.value = config.value?.projects)
-    : //@ts-ignore
-      (projects.value = filterProjectsBy(filters.value));
+
+  if (filters.value[0] == "all") {
+    project_key.value = rand(1000, 99999);
+    projects.value = config.value?.projects;
+  } else {
+    //@ts-ignore
+    projects.value = filterProjectsBy(filters.value);
+  }
 
   if (!Array.isArray(projects.value) || projects.value.length === 0) {
     const projectsCase = document.getElementById("projects-case");
@@ -283,5 +306,8 @@ input[type="checkbox"]:focus {
   to {
     transform: translate3d(0, 10px, 0);
   }
+}
+#__nuxt:has(.projects) {
+  height: auto;
 }
 </style>

@@ -4,54 +4,6 @@
       <h2>_contact-me</h2>
     </div>
 
-    <div id="page-menu" class="w-full h-full flex flex-col border-right">
-      <!-- contacts -->
-      <div id="contacts" class="submenu">
-        <div class="title" @click="open('contacts')">
-          <img class="arrow" src="/icons/arrow.svg" />
-          <h3>contacts</h3>
-        </div>
-        <div id="links">
-          <div
-            v-for="(source, key) in dataContent?.contacts.direct.sources"
-            :key="key"
-            class="link"
-          >
-            <img :src="'/icons/' + key + '.svg'" />
-            <a
-              v-html="source"
-              href="/"
-              class="font-fira_retina text-menu-text hover:text-white"
-            ></a>
-          </div>
-        </div>
-      </div>
-
-      <!-- find me also in -->
-      <div id="find-me-in" class="submenu border-top">
-        <div class="title" @click="open('find-me-in')">
-          <img class="arrow" src="/icons/arrow.svg" />
-          <h3>find-me-also-in</h3>
-        </div>
-        <div id="links">
-          <div
-            v-for="(source, key) in dataContent?.contacts.find_me_also_in
-              .sources"
-            :key="key"
-            class="link"
-          >
-            <img src="/icons/link.svg" />
-            <a
-              :href="source.url + source.user"
-              class="font-fira_retina text-menu-text hover:text-white"
-              target="_blank"
-              >{{ source.title }}</a
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="flex flex-col w-full">
       <!-- windows tab -->
       <div
@@ -69,7 +21,12 @@
           id="left"
           class="h-full w-full flex flex-col border-right items-center"
         >
-          <ContactForm :name="name" :email="email" :message="message" />
+          <ContactForm
+            :name="name"
+            :email="email"
+            :message="message"
+            @submited="submited"
+          />
         </div>
 
         <div id="right" class="h-full w-full hidden lg:flex">
@@ -94,31 +51,18 @@ const name = ref("");
 const email = ref("");
 const message = ref("");
 
-const { data: dataContent } = await useAsyncData("contacts", () =>
-  queryContent<Home>("index").only("contacts").findOne()
-);
-
-const open = (elementId: string) => {
-  const element = document.getElementById(elementId);
-  const arrow = element?.querySelector(".arrow");
-  const links = element?.querySelector("#links");
-
-  if ((links as HTMLDivElement).style.display === "block") {
-    if (links) {
-      (links as HTMLDivElement).style.display = "none";
-    }
-    if (arrow) {
-      (arrow as HTMLDivElement).style.transform = "rotate(0deg)";
-    }
-  } else {
-    if (links) {
-      (links as HTMLDivElement).style.display = "block";
-    }
-    if (arrow) {
-      (arrow as HTMLDivElement).style.transform = "rotate(90deg)";
-    }
-  }
-};
+useSeoMeta({
+  title: "Contact me",
+  description: "Contact me developer page of my portfolio",
+  ogImage: "/demo.png",
+  msapplicationTileImage: "/demo.png",
+  msapplicationTileColor: "#000000",
+  author: "Fede David",
+  twitterCard: "summary_large_image",
+  twitterTitle: "Contact me | Portfolio",
+  twitterDescription: "Contact me developer page of my portfolio",
+  twitterImage: "/demo.png",
+});
 
 onMounted(() => {
   const nameInput = document.getElementById("name-input");
@@ -152,7 +96,7 @@ onMounted(() => {
       const linksElement = links[i].querySelector("#links");
       if (linksElement) {
         (linksElement as HTMLDivElement).style.display = "block";
-        (linksElement as HTMLDivElement).style.transform = "rotate(90deg)";
+        /* (linksElement as HTMLDivElement).style.transform = "rotate(90deg)"; */
       }
     } else {
       const linksElement = links[i].querySelector("#links");
@@ -162,6 +106,12 @@ onMounted(() => {
     }
   }
 });
+
+const submited = () => {
+  name.value = "";
+  email.value = "";
+  message.value = "";
+};
 </script>
 
 <style>

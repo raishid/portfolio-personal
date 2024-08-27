@@ -47,6 +47,23 @@
 
 <script setup lang="ts">
 import type { Home } from "~/types/ContentIndex";
+
+useSeoMeta({
+  title: "Home",
+  description:
+    "Welcome to my portfolio, I am developer web passionate about technology",
+  ogImage: "/demo.png",
+  ogDescription:
+    "Welcome to my portfolio, I am developer web passionate about technology",
+  msapplicationTileImage: "/demo.png",
+  msapplicationTileColor: "#000000",
+  author: "Fede David",
+  twitterCard: "summary_large_image",
+  twitterTitle: "Home | Portfolio",
+  twitterDescription: "Welcome to my portfolio",
+  twitterImage: "/demo.png",
+});
+
 const { data: config } = useAsyncData("index", () =>
   queryContent<Home>("/").findOne()
 );

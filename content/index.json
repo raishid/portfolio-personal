@@ -6,7 +6,7 @@
     "direct": {
       "title": "contacts",
       "sources": {
-        "email": "raishidavid@gmail.com"
+        "email": ""
       }
     },
     "social": {
@@ -23,28 +23,7 @@
     },
     "find_me_also_in": {
       "title": "find-me-also-in",
-      "sources": {
-        "youtube": {
-          "title": "YouTube channel",
-          "url": "https://www.youtube.com/",
-          "user": "username"
-        },
-        "gurushots": {
-          "title": "GuruShots profile",
-          "url": "https://gurushots.com/",
-          "user": "username"
-        },
-        "instagram": {
-          "title": "Instagram account",
-          "url": "https://instagram.com/",
-          "user": "username"
-        },
-        "twitch": {
-          "title": "Twitch profile",
-          "url": "https://twitch.com/",
-          "user": "username"
-        }
-      }
+      "sources": {}
     }
   }
 }
