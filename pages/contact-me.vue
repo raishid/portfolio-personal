@@ -16,7 +16,9 @@
       </div>
 
       <!-- main -->
-      <div class="flex lg:grid lg:grid-cols-2 h-full w-full">
+      <div
+        class="flex lg:grid lg:grid-cols-2 h-full w-full overflow-scroll min-h-[560px] lg:min-h-[inherit]"
+      >
         <div
           id="left"
           class="h-full w-full flex flex-col border-right items-center"
@@ -46,7 +48,6 @@
   </main>
 </template>
 <script setup lang="ts">
-import type { Home } from "~/types/ContentIndex";
 const name = ref("");
 const email = ref("");
 const message = ref("");

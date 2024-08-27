@@ -39,6 +39,9 @@
         required
       ></textarea>
     </div>
+    <div class="mt-4">
+      <NuxtTurnstile ref="turnstile" v-model="token" />
+    </div>
     <button
       id="submit-button"
       type="submit"
@@ -47,9 +50,6 @@
     >
       submit-message
     </button>
-    <div class="mt-2">
-      <NuxtTurnstile ref="turnstile" v-model="token" />
-    </div>
   </form>
 </template>
 <script setup lang="ts">
@@ -156,10 +156,9 @@ select:-webkit-autofill:focus {
 }
 
 #submit-button {
-  @apply font-fira_retina text-white text-sm;
+  @apply font-fira_retina text-white text-sm mt-[10px] lg:mt-[20px];
   background-color: #1e2d3d;
   border-radius: 7px;
-  margin-top: 20px;
   cursor: pointer;
 }
 
