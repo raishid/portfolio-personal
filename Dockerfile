@@ -1,6 +1,6 @@
 FROM oven/bun:latest
 
-mkdir -p /app
+RUN mkdir -p /app
 
 COPY . /app
 
