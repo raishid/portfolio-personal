@@ -35,7 +35,7 @@ main.page {
   border-radius: 7px;
   border: 1px solid #1e2d3d;
   width: 100%;
-  height: -webkit-fill-available;
+  @apply h-[vmax] xl:h-screen;
 }
 
 #section-content-title {
