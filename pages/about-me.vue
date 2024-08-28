@@ -510,9 +510,6 @@ onMounted(() => {
 #section-content #contacts {
   padding: 0px 25px;
 }
-#section-content {
-  @apply lg:min-w-[260px];
-}
 .tab-active {
   background-color: #0b304d;
 }

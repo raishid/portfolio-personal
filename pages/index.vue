@@ -17,7 +17,7 @@
       </div>
 
       <div id="info">
-        <span class="action"> // complete the game to continue </span>
+        <span class="action"> // play the game to continue </span>
         <span :class="{ hide: isMobile }">
           // you can also see it on my Github page
         </span>

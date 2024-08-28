@@ -34,8 +34,8 @@ main.page {
   @apply bg-blue-background flex flex-col justify-between;
   border-radius: 7px;
   border: 1px solid #1e2d3d;
-  height: 100%;
   width: 100%;
+  height: -webkit-fill-available;
 }
 
 #section-content-title {
