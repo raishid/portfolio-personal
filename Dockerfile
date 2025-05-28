@@ -12,6 +12,9 @@ ENV PATH="$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH"
 # Install Node.js using nvm
 RUN bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm use $NODE_VERSION"
 
+#remove apt cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p /app
 
 COPY . /app
