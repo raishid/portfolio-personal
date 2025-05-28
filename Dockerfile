@@ -6,7 +6,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | b
 
 # Set environment variables for nvm
 ENV NVM_DIR="/root/.nvm"
-ENV NODE_VERSION="18"
+ENV NODE_VERSION="20"
 ENV PATH="$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH"
 
 # Install Node.js using nvm
@@ -24,6 +24,8 @@ WORKDIR /app
 ENV BUN_ALLOW_UNTRUSTED=1
 
 RUN bun install
+
+# RUN bun pm untrusted > untrusted.txt || true
 
 RUN bun run postinstall
 
