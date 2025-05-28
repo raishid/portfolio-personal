@@ -1,4 +1,4 @@
-FROM oven/bun:1.1.1-alpine
+FROM oven/bun:1.1.0
 
 RUN mkdir -p /app
 
