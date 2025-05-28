@@ -2,6 +2,8 @@
  * Nuxt 3 Config File
  Usage: https://nuxt.com/docs/api/configuration/nuxt-config
  */
+import path from 'path';
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -61,4 +63,11 @@ export default defineNuxtConfig({
     },
   },
   compatibilityDate: "2024-08-26",
+  vite: {
+     resolve: {
+      alias: {
+        '#site-config': path.resolve(__dirname, 'node_modules/nuxt-site-config/dist/runtime'),
+      },
+    },
+  }
 });

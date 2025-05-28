@@ -25,10 +25,6 @@ ENV BUN_ALLOW_UNTRUSTED=1
 
 RUN bun install
 
-# RUN bun pm untrusted > untrusted.txt || true
-
-RUN bun run postinstall
-
 RUN bun run build
 
 CMD ["bun", ".output/server/index.mjs"]
