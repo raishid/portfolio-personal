@@ -21,7 +21,7 @@ COPY . /app
 
 WORKDIR /app
 
-RUN bun pm untrusted --allow
+ENV BUN_ALLOW_UNTRUSTED=1
 
 RUN bun install
 
