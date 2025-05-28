@@ -2,8 +2,6 @@
  * Nuxt 3 Config File
  Usage: https://nuxt.com/docs/api/configuration/nuxt-config
  */
-import path from 'path';
-
 export default defineNuxtConfig({
   app: {
     head: {
@@ -21,13 +19,11 @@ export default defineNuxtConfig({
 
   modules: [
    "@nuxtjs/tailwindcss",
-   "@nuxt/content",
    "@vueuse/nuxt",
    "@vueuse/motion/nuxt",
    "@nuxtjs/turnstile",
    "@nuxtjs/seo",
-   "@nuxtjs/robots",
-   "@nuxtjs/sitemap",
+   "@nuxt/content",
   ],
   tailwindcss: {
     cssPath: ["~/assets/tailwind.css", { injectPosition: 0 }],
@@ -62,12 +58,4 @@ export default defineNuxtConfig({
       turnsitle: import.meta.env.TURNSTILE_SITE_KEY,
     },
   },
-  compatibilityDate: "2024-08-26",
-  vite: {
-     resolve: {
-      alias: {
-        '#site-config': path.resolve(__dirname, 'node_modules/nuxt-site-config/dist/runtime'),
-      },
-    },
-  }
 });
