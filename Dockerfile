@@ -1,4 +1,4 @@
-FROM oven/bun:latest
+FROM oven/bun:1.2.2
 
 #install nvm
 RUN apt-get update && apt-get install -y curl
@@ -14,6 +14,8 @@ RUN bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm use $NOD
 
 #remove apt cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ENV BUN_DISABLE_POSTINSTALL=0
 
 RUN mkdir -p /app
 
