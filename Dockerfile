@@ -15,13 +15,13 @@ RUN bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm use $NOD
 #remove apt cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ENV BUN_DISABLE_POSTINSTALL=0
-
 RUN mkdir -p /app
 
 COPY . /app
 
 WORKDIR /app
+
+RUN bun pm untrusted --allow
 
 RUN bun install
 
