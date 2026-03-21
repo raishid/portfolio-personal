@@ -68,6 +68,16 @@
         "Python"
       ],
       "url": "#"
+    },
+    "8": {
+      "title": "_find-merida-homes",
+      "description": "Real Estate Page in Mexico - Find Merida Homes",
+      "img": "/images/projects/find-merida-homes.png",
+      "tech": [
+        "Vue",
+        "Nuxt"
+      ],
+      "url": "https://findmeridahomes.com"
     }
   }
 }
